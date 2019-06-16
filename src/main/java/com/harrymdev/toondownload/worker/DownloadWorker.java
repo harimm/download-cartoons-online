@@ -1,6 +1,7 @@
 package com.harrymdev.toondownload.worker;
 
 import com.harrymdev.toondownload.util.CloseUtil;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,6 +25,7 @@ import java.nio.channels.WritableByteChannel;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@SuppressWarnings("WeakerAccess")
 public class DownloadWorker {
     private static final Logger logger = Logger.getLogger(DownloadWorker.class);
 
@@ -49,10 +51,15 @@ public class DownloadWorker {
             HttpGet httpGet = new HttpGet(url);
 
             httpResponse = httpClient.execute(httpGet);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                logger.error(String.format("Failed connecting to %s. Status code is %d.", url, statusCode));
+                return Boolean.FALSE;
+            }
 
-            String fullFilePath = String.format("%s%s.mp4", episodeTracker.getFolder(), fileName);
+            String fullFilePath = String.format("%s%s.mp4", episodeTracker.getDownloadFolder(), fileName);
 
-            logger.info("Downloading video to: " + fullFilePath);
+            logger.info(String.format("Downloading video to: %s", fullFilePath));
             long currentTime = System.currentTimeMillis();
             File downloadedFile = new File(fullFilePath);
             downloadedFile.mkdirs();
@@ -77,11 +84,10 @@ public class DownloadWorker {
             CloseUtil.close(readableByteChannel);
             CloseUtil.close(writableByteChannel);
             episodeTracker.addEpisodeToList(fileName);
-            logger.info("Video saved to " + fullFilePath
-                    + "\nTime taken: " + (System.currentTimeMillis() - currentTime) + " ms.");
+            logger.info(String.format("Video saved to %s. Time taken: %d ms.", fullFilePath, (System.currentTimeMillis() - currentTime)));
             return Boolean.TRUE;
         } catch (IOException e) {
-            logger.error("Error downloading Video: " + url, e);
+            logger.error(String.format("Error downloading Video: %s", url), e);
         } finally {
             CloseUtil.close(httpClient);
             CloseUtil.close(httpResponse);

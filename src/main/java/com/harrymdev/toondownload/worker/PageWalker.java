@@ -2,6 +2,7 @@ package com.harrymdev.toondownload.worker;
 
 import com.harrymdev.toondownload.util.CloseUtil;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -15,10 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 
 @Component
+@SuppressWarnings("WeakerAccess")
 public class PageWalker {
     private static final Logger logger = Logger.getLogger(PageWalker.class);
 
@@ -33,8 +36,17 @@ public class PageWalker {
             httpClient = HttpClients.custom().build();
             HttpGet httpGet = new HttpGet(url + cartoonBasePath);
 
+            Map<String, String> episodes = new TreeMap<>();
+
             httpResponse = httpClient.execute(httpGet);
-            String responseString = IOUtils.toString(httpResponse.getEntity().getContent(), "UTF-8");
+
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                logger.error(String.format("Failed connecting to %s. Status code is %d.", url, statusCode));
+                return episodes;
+            }
+
+            String responseString = IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8);
 
             Document page = Jsoup.parse(responseString);
 
@@ -42,8 +54,6 @@ public class PageWalker {
             Element episodeListRoot = ((Element) baseElement.parentNode().parentNode()).selectFirst("ul");
 
             Elements listItems = episodeListRoot.select("a");
-
-            Map<String, String> episodes = new TreeMap<>();
 
             for (Element listItem: listItems) {
                 String cartoonUrl = listItem.attr("href");
@@ -53,7 +63,7 @@ public class PageWalker {
 
             return episodes;
         } catch (IOException e) {
-            logger.error("Error fetching cartoonUrls for " + cartoonBasePath, e);
+            logger.error(String.format("Error fetching cartoonUrls for %s.",cartoonBasePath), e);
         } finally {
             CloseUtil.close(httpClient);
             CloseUtil.close(httpResponse);

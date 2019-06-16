@@ -20,22 +20,23 @@ import java.util.Set;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@SuppressWarnings("WeakerAccess")
 public class EpisodeTracker {
-    private static Logger logger = Logger.getLogger(EpisodeTracker.class);
+    private static final Logger logger = Logger.getLogger(EpisodeTracker.class);
 
     private static final String CARTOON_PATH_PROPERTY = "toon_download.download.%s.target.path.root";
+    private static final String EPISODE_LIST_FILE_NAME = "episodeList";
 
     @Autowired
     private ApplicationContext applicationContext;
 
     private String cartoonName;
-
-    public String getFolder() {
-        return folder;
-    }
-
-    private String folder;
+    private String downloadFolder;
     private Set<String> savedFiles = new HashSet<>();
+
+    public String getDownloadFolder() {
+        return downloadFolder;
+    }
 
     @Autowired
     public EpisodeTracker(String cartoonName) {
@@ -45,8 +46,12 @@ public class EpisodeTracker {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @PostConstruct
     private void setup() throws IOException {
-        folder = applicationContext.getEnvironment().getProperty(String.format(CARTOON_PATH_PROPERTY, cartoonName));
-        File filePath = new File(folder);
+        String cartoonDownloadPathProperty = String.format(CARTOON_PATH_PROPERTY, cartoonName);
+        downloadFolder = applicationContext.getEnvironment().getProperty(cartoonDownloadPathProperty);
+        if (downloadFolder == null) {
+            throw new IllegalArgumentException(String.format("Value for %s not provided.", cartoonDownloadPathProperty));
+        }
+        File filePath = new File(downloadFolder);
         filePath.mkdirs();
         FileReader fileReader = null;
 
@@ -61,7 +66,7 @@ public class EpisodeTracker {
                         .forEach(fileName -> savedFiles.add(fileName));
             }
         } catch (IOException e) {
-            logger.error("Failed to access episode list");
+            logger.error("Failed to access episode list.");
             throw e;
         } finally {
             CloseUtil.close(fileReader);
@@ -87,7 +92,7 @@ public class EpisodeTracker {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private File getEpisodeList() throws IOException {
-        File episodeList = new File(folder + "episodeList");
+        File episodeList = new File(String.format("%s%s", downloadFolder, EPISODE_LIST_FILE_NAME));
         episodeList.createNewFile();
         return episodeList;
     }

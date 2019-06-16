@@ -33,22 +33,31 @@ public class DownloadManager {
     public void downloadCartoons() {
         for (String cartoonName : cartoonsToDownload) {
             String cartoonUrl = applicationContext.getEnvironment().getProperty(String.format(CARTOON_URL_PROPERTY, cartoonName));
+            if (cartoonUrl == null) {
+                logger.warn(String.format("Url not available for cartoon %s.", cartoonName));
+                continue;
+            }
             Map<String, String> episodeList = pageWalker.getCartoonPaths(cartoonUrl);
-            logger.info("Found " + episodeList.size() + " episodes for " + cartoonName);
+            logger.info(String.format("Found %d episodes for %s", episodeList.size(), cartoonName));
 
             EpisodeTracker episodeTracker = applicationContext.getBean(EpisodeTracker.class, cartoonName);
 
-            episodeList.forEach((key, value) -> {
-                if (episodeTracker.shouldDownloadFile(key)) {
+            episodeList.forEach((episodeName, episodeUrl) -> {
+                if (episodeTracker.shouldDownloadFile(episodeName)) {
                     DownloadWorker downloadWorker = applicationContext.getBean(DownloadWorker.class, episodeTracker);
-                    FutureTask<Boolean> task = new FutureTask<>(() -> {
-                        String videoUrl = videoFinder.findVideoUrl(value);
-                        logger.debug("Episode name: " + key + ", Video url: " + videoUrl);
-                        return downloadWorker.downloadVideo(key, videoUrl);
+                    FutureTask<Boolean> downloadTask = new FutureTask<>(() -> {
+                        String videoUrl = videoFinder.findVideoUrl(episodeUrl);
+                        if (videoUrl != null) {
+                            logger.debug(String.format("Episode name: %s, Video url: %s", episodeName, videoUrl));
+                            return downloadWorker.downloadVideo(episodeName, videoUrl);
+                        } else {
+                            logger.warn(String.format("Could not find download url for: %s.", episodeUrl));
+                            return false;
+                        }
                     });
-                    executorService.schedule(task, 0, TimeUnit.SECONDS);
+                    executorService.schedule(downloadTask, 0, TimeUnit.SECONDS);
                 } else {
-                    logger.info(key + " was already downloaded.");
+                    logger.info(String.format("%s was already downloaded.", episodeName));
                 }
             });
         }

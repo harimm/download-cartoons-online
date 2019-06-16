@@ -3,9 +3,13 @@
 
 # Output folders
 out/
+build/
 
 # IntelliJ Idea configuration files
 .idea/
+
+# intelliJ Save files
+*.save
 
 # Gradle files
 .gradle/
