@@ -1,13 +1,17 @@
 package com.harrymdev.toondownload.worker;
 
+import com.harrymdev.toondownload.model.EpisodeStatus;
+import com.harrymdev.toondownload.util.TaskUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +24,8 @@ public class DownloadManager {
 
     @Value("#{'${toon_download.cartoons_to_download}'.split(',')}")
     private List<String> cartoonsToDownload;
+    @Value("${toon_download.download.wait_until_series_complete}")
+    private boolean waitUntilComplete;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -42,24 +48,37 @@ public class DownloadManager {
 
             EpisodeTracker episodeTracker = applicationContext.getBean(EpisodeTracker.class, cartoonName);
 
+            List<Future<Boolean>> downloadTasks = new ArrayList<>();
+
             episodeList.forEach((episodeName, episodeUrl) -> {
-                if (episodeTracker.shouldDownloadFile(episodeName)) {
+                EpisodeStatus episodeStatus = episodeTracker.shouldDownloadFile(episodeName);
+                if (EpisodeStatus.Pending.equals(episodeStatus)) {
                     DownloadWorker downloadWorker = applicationContext.getBean(DownloadWorker.class, episodeTracker);
                     FutureTask<Boolean> downloadTask = new FutureTask<>(() -> {
                         String videoUrl = videoFinder.findVideoUrl(episodeUrl);
                         if (videoUrl != null) {
                             logger.debug(String.format("Episode name: %s, Video url: %s", episodeName, videoUrl));
-                            return downloadWorker.downloadVideo(episodeName, videoUrl);
+                            boolean status = downloadWorker.downloadVideo(episodeName, videoUrl);
+                            if (!status) {
+                                logger.error(String.format("Failed to download episode from url %s.", episodeUrl));
+                            }
+                            return false;
                         } else {
                             logger.warn(String.format("Could not find download url for: %s.", episodeUrl));
                             return false;
                         }
                     });
+                    downloadTasks.add(downloadTask);
                     executorService.schedule(downloadTask, 0, TimeUnit.SECONDS);
-                } else {
+                } else if (EpisodeStatus.Downloaded.equals(episodeStatus)) {
                     logger.info(String.format("%s was already downloaded.", episodeName));
+                } else {
+                    logger.info(String.format("%s is ignored.", episodeName));
                 }
             });
+            if (waitUntilComplete) {
+                TaskUtil.waitUntilComplete(downloadTasks);
+            }
         }
     }
 }

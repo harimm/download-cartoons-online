@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -86,8 +85,8 @@ public class DownloadWorker {
             episodeTracker.addEpisodeToList(fileName);
             logger.info(String.format("Video saved to %s. Time taken: %d ms.", fullFilePath, (System.currentTimeMillis() - currentTime)));
             return Boolean.TRUE;
-        } catch (IOException e) {
-            logger.error(String.format("Error downloading Video: %s", url), e);
+        } catch (Throwable t) {
+            logger.error(String.format("Error downloading Video: %s", url), t);
         } finally {
             CloseUtil.close(httpClient);
             CloseUtil.close(httpResponse);

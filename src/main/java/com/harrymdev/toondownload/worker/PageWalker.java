@@ -15,7 +15,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
@@ -62,8 +61,8 @@ public class PageWalker {
             }
 
             return episodes;
-        } catch (IOException e) {
-            logger.error(String.format("Error fetching cartoonUrls for %s.",cartoonBasePath), e);
+        } catch (Throwable t) {
+            logger.error(String.format("Error fetching cartoonUrls for %s.",cartoonBasePath), t);
         } finally {
             CloseUtil.close(httpClient);
             CloseUtil.close(httpResponse);

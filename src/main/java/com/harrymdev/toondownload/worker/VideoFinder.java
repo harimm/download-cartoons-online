@@ -12,7 +12,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Component
@@ -42,8 +41,8 @@ public class VideoFinder {
             int jsonEndIndex = javaScript.indexOf("type:") - 2;
 
             return javaScript.substring(jsonStartIndex, jsonEndIndex);
-        } catch (IOException e) {
-            logger.error(String.format("Error fetching video url from %s", episodeUrl), e);
+        } catch (Throwable t) {
+            logger.error(String.format("Error fetching video url from %s", episodeUrl), t);
         } finally {
             CloseUtil.close(httpClient);
             CloseUtil.close(httpResponse);
