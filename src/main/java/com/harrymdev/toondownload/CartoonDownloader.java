@@ -3,11 +3,12 @@ package com.harrymdev.toondownload;
 import com.harrymdev.toondownload.config.BaseConfig;
 import com.harrymdev.toondownload.util.CloseUtil;
 import com.harrymdev.toondownload.worker.DownloadManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class CartoonDownloader {
-    private static final Logger logger = Logger.getLogger(CartoonDownloader.class);
+    private static final Logger logger = LoggerFactory.getLogger(CartoonDownloader.class);
 
     public static void main(String[] args) {
         logger.info("Initializing Application Context.");

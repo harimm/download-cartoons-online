@@ -7,7 +7,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -26,12 +27,12 @@ import java.nio.channels.WritableByteChannel;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @SuppressWarnings("WeakerAccess")
 public class DownloadWorker {
-    private static final Logger logger = Logger.getLogger(DownloadWorker.class);
+    private static final Logger logger = LoggerFactory.getLogger(DownloadWorker.class);
+
+    private final EpisodeTracker episodeTracker;
 
     @Value("${toon_download.base.url}")
     private String url;
-
-    private EpisodeTracker episodeTracker;
 
     @Autowired
     public DownloadWorker(EpisodeTracker episodeTracker) {

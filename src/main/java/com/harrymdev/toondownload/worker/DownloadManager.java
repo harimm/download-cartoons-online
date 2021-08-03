@@ -2,7 +2,8 @@ package com.harrymdev.toondownload.worker;
 
 import com.harrymdev.toondownload.model.EpisodeStatus;
 import com.harrymdev.toondownload.util.TaskUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class DownloadManager {
-    private static final Logger logger = Logger.getLogger(DownloadManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DownloadManager.class);
 
     private static final String CARTOON_URL_PROPERTY = "toon_download.download.%s.url";
 

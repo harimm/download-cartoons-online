@@ -1,23 +1,24 @@
 package com.harrymdev.toondownload.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class TaskUtil {
-    private static Logger logger = Logger.getLogger(TaskUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskUtil.class);
 
     public static <T> void waitUntilComplete(Collection<Future<T>> futures) {
         if (futures != null) {
-            for (Future future : futures) {
+            for (Future<T> future : futures) {
                 waitUntilComplete(future);
             }
         }
     }
 
-    private static void waitUntilComplete(Future future) {
+    private static <T> void waitUntilComplete(Future<T> future) {
         try {
             future.get();
         } catch (InterruptedException | ExecutionException e) {

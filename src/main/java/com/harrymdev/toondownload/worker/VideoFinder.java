@@ -8,10 +8,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.Logger;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 @SuppressWarnings("WeakerAccess")
 public class VideoFinder {
-    private static final Logger logger = Logger.getLogger(VideoFinder.class);
+    private static final Logger logger = LoggerFactory.getLogger(VideoFinder.class);
 
     @Autowired
     private JSONParser jsonParser;
@@ -42,7 +43,7 @@ public class VideoFinder {
             String responseString = IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8);
 
             Document page = Jsoup.parse(responseString);
-            return findVideoUrlFromPage(page, episodeUrl);
+            return findVideoUrlFromPage(page);
         } catch (Throwable t) {
             logger.error(String.format("Error fetching video url from %s", episodeUrl), t);
         } finally {
@@ -52,7 +53,7 @@ public class VideoFinder {
         return null;
     }
 
-    private String findVideoUrlFromPage(Document page, String episodeUrl) {
+    private String findVideoUrlFromPage(Document page) {
         // Method 1: Find url using jwplayer id
         try {
             String javaScript = page.selectFirst("#jwplayer-0").nextElementSibling().html();
@@ -90,11 +91,8 @@ public class VideoFinder {
             if (statusCode != HttpStatus.SC_OK) {
                 return null;
             }
-            String responseString = IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8);
-            Document page1 = Jsoup.parse(responseString);
-            String hydurl = page1.attr("src");
 
-            return responseString;
+            return IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8);
         } catch (Throwable t) {
             logger.warn("Cannot find video url using method 2.", t);
         } finally {
