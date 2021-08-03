@@ -44,6 +44,10 @@ public class DownloadManager {
                 continue;
             }
             Map<String, String> episodeList = pageWalker.getCartoonPaths(cartoonUrl);
+            if (episodeList == null) {
+                logger.error(String.format("Episode list not found. Skipping cartoon - %s.", cartoonName));
+                continue;
+            }
             logger.info(String.format("Found %d episodes for %s", episodeList.size(), cartoonName));
 
             EpisodeTracker episodeTracker = applicationContext.getBean(EpisodeTracker.class, cartoonName);
