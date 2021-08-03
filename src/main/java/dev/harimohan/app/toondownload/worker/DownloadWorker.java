@@ -1,6 +1,6 @@
-package com.harrymdev.toondownload.worker;
+package dev.harimohan.app.toondownload.worker;
 
-import com.harrymdev.toondownload.util.CloseUtil;
+import dev.harimohan.app.toondownload.util.CloseUtil;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

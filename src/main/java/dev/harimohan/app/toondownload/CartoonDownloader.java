@@ -1,8 +1,8 @@
-package com.harrymdev.toondownload;
+package dev.harimohan.app.toondownload;
 
-import com.harrymdev.toondownload.config.BaseConfig;
-import com.harrymdev.toondownload.util.CloseUtil;
-import com.harrymdev.toondownload.worker.DownloadManager;
+import dev.harimohan.app.toondownload.config.BaseConfig;
+import dev.harimohan.app.toondownload.util.CloseUtil;
+import dev.harimohan.app.toondownload.worker.DownloadManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

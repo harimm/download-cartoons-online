@@ -1,4 +1,4 @@
-package com.harrymdev.toondownload.util;
+package dev.harimohan.app.toondownload.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

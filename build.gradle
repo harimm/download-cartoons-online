@@ -1,4 +1,4 @@
-group 'com.harrymdev'
+group 'dev.harimohan'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

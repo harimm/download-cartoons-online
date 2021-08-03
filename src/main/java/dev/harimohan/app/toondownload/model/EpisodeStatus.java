@@ -1,4 +1,4 @@
-package com.harrymdev.toondownload.model;
+package dev.harimohan.app.toondownload.model;
 
 public enum EpisodeStatus {
     Pending,

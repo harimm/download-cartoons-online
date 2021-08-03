@@ -1,4 +1,4 @@
-package com.harrymdev.toondownload.config;
+package dev.harimohan.app.toondownload.config;
 
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;

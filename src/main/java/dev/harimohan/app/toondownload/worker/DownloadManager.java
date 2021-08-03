@@ -1,7 +1,7 @@
-package com.harrymdev.toondownload.worker;
+package dev.harimohan.app.toondownload.worker;
 
-import com.harrymdev.toondownload.model.EpisodeStatus;
-import com.harrymdev.toondownload.util.TaskUtil;
+import dev.harimohan.app.toondownload.model.EpisodeStatus;
+import dev.harimohan.app.toondownload.util.TaskUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

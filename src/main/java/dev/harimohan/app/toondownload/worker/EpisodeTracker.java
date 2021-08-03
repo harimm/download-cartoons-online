@@ -1,7 +1,7 @@
-package com.harrymdev.toondownload.worker;
+package dev.harimohan.app.toondownload.worker;
 
-import com.harrymdev.toondownload.model.EpisodeStatus;
-import com.harrymdev.toondownload.util.CloseUtil;
+import dev.harimohan.app.toondownload.model.EpisodeStatus;
+import dev.harimohan.app.toondownload.util.CloseUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
