@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Configuration
 @PropertySource({"classpath:application.properties"})
-@ComponentScan("com.harrymdev.toondownload")
+@ComponentScan("dev.harimohan.app.toondownload")
 public class BaseConfig {
     @Value("${toon_download.download.pool.size}")
     private Integer poolSize;
