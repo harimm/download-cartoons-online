@@ -10,20 +10,24 @@ repositories {
 }
 
 ext {
-    spring_version = '5.1.7.RELEASE'
-    log4j_version = '2.13.2'
+    spring_version = '5.3.14'
+    log4j_version = '2.17.0'
+    jsoup_version = '1.14.2'
+    json_simple_version = '1.1.1'
+    commons_io_version = '2.11.0'
+    httpcomponents_version = '4.5.13'
 }
 
 dependencies {
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+    compile group: 'org.jsoup', name: 'jsoup', version: jsoup_version
     compile group: 'org.springframework', name: 'spring-core', version: spring_version
     compile group: 'org.springframework', name: 'spring-context', version: spring_version
-    compile group: 'commons-io', name: 'commons-io', version: '2.7'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    compile group: 'commons-io', name: 'commons-io', version: commons_io_version
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpcomponents_version
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j_version
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j_version
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j_version
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: json_simple_version
 
     testCompile group: 'junit', name: 'junit', version: '4.13.1'
 }
