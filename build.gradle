@@ -10,13 +10,14 @@ repositories {
 }
 
 ext {
-    spring_version = '5.3.17'
+    spring_version = '5.3.20'
     log4j_version = '2.17.1'
     jsoup_version = '1.14.2'
     json_simple_version = '1.1.1'
     commons_io_version = '2.11.0'
     httpcomponents_version = '4.5.13'
     commons_codec_version = '1.15'
+    junit_version = '4.31.2'
 }
 
 dependencies {
@@ -33,5 +34,5 @@ dependencies {
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: json_simple_version
     implementation group: 'commons-codec', name: 'commons-codec', version: commons_codec_version
 
-    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+    testImplementation group: 'junit', name: 'junit', version: junit_version
 }
