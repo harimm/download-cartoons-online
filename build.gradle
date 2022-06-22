@@ -17,7 +17,7 @@ ext {
     commons_io_version = '2.11.0'
     httpcomponents_version = '4.5.13'
     commons_codec_version = '1.15'
-    junit_version = '4.31.2'
+    junit_version = '4.13.2'
 }
 
 dependencies {
