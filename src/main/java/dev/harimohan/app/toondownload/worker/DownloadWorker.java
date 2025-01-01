@@ -1,12 +1,12 @@
 package dev.harimohan.app.toondownload.worker;
 
 import dev.harimohan.app.toondownload.util.CloseUtil;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.LaxRedirectStrategy;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class DownloadWorker {
             HttpGet httpGet = new HttpGet(url);
 
             httpResponse = httpClient.execute(httpGet);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            int statusCode = httpResponse.getCode();
             if (statusCode != HttpStatus.SC_OK) {
                 logger.error(String.format("Failed connecting to %s. Status code is %d.", url, statusCode));
                 return Boolean.FALSE;

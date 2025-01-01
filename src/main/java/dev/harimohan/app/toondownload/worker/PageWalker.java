@@ -2,11 +2,11 @@ package dev.harimohan.app.toondownload.worker;
 
 import dev.harimohan.app.toondownload.util.CloseUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpStatus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,7 +40,7 @@ public class PageWalker {
 
             httpResponse = httpClient.execute(httpGet);
 
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            int statusCode = httpResponse.getCode();
             if (statusCode != HttpStatus.SC_OK) {
                 logger.error(String.format("Failed connecting to %s. Status code is %d.", url, statusCode));
                 return episodes;

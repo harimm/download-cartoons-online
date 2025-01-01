@@ -1,22 +1,24 @@
 group 'dev.harimohan'
-version '1.0-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_23
+targetCompatibility = JavaVersion.VERSION_23
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    spring_version = '5.3.20'
-    log4j_version = '2.17.1'
-    jsoup_version = '1.14.2'
+    spring_version = '6.2.1'
+    log4j_version = '2.24.3'
+    jsoup_version = '1.18.2'
     json_simple_version = '1.1.1'
-    commons_io_version = '2.11.0'
-    httpcomponents_version = '4.5.13'
-    commons_codec_version = '1.15'
+    commons_io_version = '2.18.0'
+    httpcomponents_version = '5.4.1'
+    jakarta_annotation_version = '3.0.0'
+
     junit_version = '4.13.2'
 }
 
@@ -25,14 +27,12 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-core', version: spring_version
     implementation group: 'org.springframework', name: 'spring-context', version: spring_version
     implementation group: 'commons-io', name: 'commons-io', version: commons_io_version
-    implementation (group: 'org.apache.httpcomponents', name: 'httpclient', version: httpcomponents_version) {
-        exclude group: 'commons-codec', module: 'commons-codec'
-    }
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: httpcomponents_version
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j_version
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j_version
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j_version
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: json_simple_version
-    implementation group: 'commons-codec', name: 'commons-codec', version: commons_codec_version
+    implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: jakarta_annotation_version
 
     testImplementation group: 'junit', name: 'junit', version: junit_version
 }

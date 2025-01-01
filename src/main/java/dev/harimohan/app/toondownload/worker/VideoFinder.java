@@ -2,12 +2,12 @@ package dev.harimohan.app.toondownload.worker;
 
 import dev.harimohan.app.toondownload.util.CloseUtil;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.net.URIBuilder;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,7 +35,7 @@ public class VideoFinder {
             HttpGet httpGet = new HttpGet(episodeUrl);
 
             httpResponse = httpClient.execute(httpGet);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            int statusCode = httpResponse.getCode();
             if (statusCode != HttpStatus.SC_OK) {
                 logger.error(String.format("Failed connecting to %s. Status code is %d.", episodeUrl, statusCode));
                 return null;
@@ -87,7 +87,7 @@ public class VideoFinder {
             HttpGet httpGet = new HttpGet(builder.build());
 
             httpResponse = httpClient.execute(httpGet);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            int statusCode = httpResponse.getCode();
             if (statusCode != HttpStatus.SC_OK) {
                 return null;
             }
