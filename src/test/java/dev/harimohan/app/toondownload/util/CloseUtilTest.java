@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class CloseUtilTest {
 
@@ -17,20 +18,18 @@ public class CloseUtilTest {
     }
 
     @Test
-    public void shouldCloseProvidedInstance() {
-        AtomicBoolean closed = new AtomicBoolean(false);
-        Closeable closeable = () -> closed.set(true);
+    public void shouldCloseProvidedInstance() throws IOException {
+        Closeable closeable = mock(Closeable.class);
 
         CloseUtil.close(closeable);
 
-        assertTrue(closed.get());
+        verify(closeable).close();
     }
 
     @Test
     public void shouldSwallowIoException() {
-        Closeable closeable = () -> {
-            throw new IOException("boom");
-        };
+        Closeable closeable = mock(Closeable.class);
+        doThrow(new IOException("boom")).when(closeable).close();
 
         assertDoesNotThrow(() -> CloseUtil.close(closeable));
     }

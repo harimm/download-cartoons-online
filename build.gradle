@@ -35,7 +35,7 @@ dependencies {
     implementation "commons-io:commons-io:$commons_io_version", "commons-io:commons-io:$commons_io_version"
     implementation "org.apache.httpcomponents.client5:httpclient5:$httpcomponents_version"
     implementation "org.apache.logging.log4j:log4j-api:$log4j_version"
-    implementation "org.apache.logging.log4j:log4j-core:$log4j_version", "org.apache.logging.log4j:log4j-core:$log4j_version", "org.apache.logging.log4j:log4j-core:$log4j_version"
+    implementation "org.apache.logging.log4j:log4j-core:$log4j_version"
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j_version"
     implementation("com.googlecode.json-simple:json-simple:$json_simple_version") {
         exclude group: 'junit', module: 'junit'
