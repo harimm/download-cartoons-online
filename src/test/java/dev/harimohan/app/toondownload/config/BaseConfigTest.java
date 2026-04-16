@@ -9,10 +9,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-class BaseConfigTest {
+public class BaseConfigTest {
 
     @Test
-    void shouldProvideSingletonBeans() {
+    public void shouldProvideSingletonBeans() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.register(BaseConfig.class);
             context.refresh();

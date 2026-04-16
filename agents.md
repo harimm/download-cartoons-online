@@ -28,6 +28,9 @@ This file is a contributor/automation guide for agents working in `download-cart
 4. Avoid hardcoded machine-specific paths in source code.
 5. Preserve existing logging style and tone.
 6. Keep changes backward-compatible with existing config keys.
+7. Always declare explicit access modifiers on classes, methods, and fields.
+8. Unless broader visibility is required by framework/runtime/contracts, default members to `private`.
+9. JUnit test methods should be declared `public`.
 
 ## Configuration Rules
 - Existing key formats must remain valid.

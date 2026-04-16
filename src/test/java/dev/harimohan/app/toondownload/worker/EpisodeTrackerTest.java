@@ -23,22 +23,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EpisodeTrackerTest {
+public class EpisodeTrackerTest {
 
     @TempDir
-    Path tempDir;
+    private Path tempDir;
 
     private Map<String, String> previousSystemProperties;
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         if (previousSystemProperties != null) {
             restoreSystemProperties(previousSystemProperties);
         }
     }
 
     @Test
-    void shouldFailWhenDownloadFolderPropertyIsMissing() {
+    public void shouldFailWhenDownloadFolderPropertyIsMissing() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             context.register(TestConfig.class);
             context.refresh();
@@ -48,7 +48,7 @@ class EpisodeTrackerTest {
     }
 
     @Test
-    void shouldMarkEpisodeAsDownloadedAfterAddingToList() throws Exception {
+    public void shouldMarkEpisodeAsDownloadedAfterAddingToList() throws Exception {
         String folder = tempDir.resolve("tracker").toString() + File.separator;
         previousSystemProperties = setSystemProperties(Map.of(
                 "toon_download.download.sample.target.path.root", folder
@@ -70,7 +70,7 @@ class EpisodeTrackerTest {
     }
 
     @Test
-    void shouldLoadIgnoreListEntries() throws Exception {
+    public void shouldLoadIgnoreListEntries() throws Exception {
         String folder = tempDir.resolve("trackerIgnore").toString() + File.separator;
         Files.createDirectories(Path.of(folder));
         Files.writeString(Path.of(folder, "ignoreList"), "ep-ignored\n");
@@ -90,15 +90,15 @@ class EpisodeTrackerTest {
     }
 
     @Configuration
-    static class TestConfig {
+    private static class TestConfig {
         @Bean
-        static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
             return new PropertySourcesPlaceholderConfigurer();
         }
 
         @Bean
         @Scope("prototype")
-        EpisodeTracker episodeTracker(String cartoonName) {
+        public EpisodeTracker episodeTracker(String cartoonName) {
             return new EpisodeTracker(cartoonName);
         }
     }

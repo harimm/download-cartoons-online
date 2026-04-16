@@ -16,19 +16,19 @@ import static dev.harimohan.app.toondownload.TestSupport.textResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class VideoFinderTest {
+public class VideoFinderTest {
 
     private HttpServer server;
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         if (server != null) {
             stopServer(server);
         }
     }
 
     @Test
-    void shouldFindVideoUrlUsingMethodOne() throws Exception {
+    public void shouldFindVideoUrlUsingMethodOne() throws Exception {
         server = startServer();
         String html = "<html><body>"
                 + "<div id=\"jwplayer-0\"></div>"
@@ -44,7 +44,7 @@ class VideoFinderTest {
     }
 
     @Test
-    void shouldFindVideoUrlUsingMethodTwoFallback() throws Exception {
+    public void shouldFindVideoUrlUsingMethodTwoFallback() throws Exception {
         server = startServer();
         String base = baseUrl(server);
         String html = "<html><body><div class=\"playerpro\">"
@@ -63,7 +63,7 @@ class VideoFinderTest {
     }
 
     @Test
-    void shouldReturnNullWhenEpisodeRequestIsNotSuccessful() throws Exception {
+    public void shouldReturnNullWhenEpisodeRequestIsNotSuccessful() throws Exception {
         server = startServer();
         server.createContext("/episode", bytesResponse(404, new byte[0]));
 
@@ -75,14 +75,14 @@ class VideoFinderTest {
     }
 
     @Configuration
-    static class TestConfig {
+    private static class TestConfig {
         @Bean
-        JSONParser jsonParser() {
+        public JSONParser jsonParser() {
             return new JSONParser();
         }
 
         @Bean
-        VideoFinder videoFinder() {
+        public VideoFinder videoFinder() {
             return new VideoFinder();
         }
     }

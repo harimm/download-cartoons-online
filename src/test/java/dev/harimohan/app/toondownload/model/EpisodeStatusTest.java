@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class EpisodeStatusTest {
+public class EpisodeStatusTest {
 
     @Test
-    void shouldContainExpectedValuesInOrder() {
+    public void shouldContainExpectedValuesInOrder() {
         EpisodeStatus[] values = EpisodeStatus.values();
 
         assertEquals(3, values.length);

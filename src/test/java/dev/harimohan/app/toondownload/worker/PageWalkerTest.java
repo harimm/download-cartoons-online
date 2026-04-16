@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class PageWalkerTest {
+public class PageWalkerTest {
 
     private HttpServer server;
     private Map<String, String> previousSystemProperties;
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         if (server != null) {
             stopServer(server);
         }
@@ -36,7 +36,7 @@ class PageWalkerTest {
     }
 
     @Test
-    void shouldReturnEpisodeMapForValidPage() throws Exception {
+    public void shouldReturnEpisodeMapForValidPage() throws Exception {
         server = startServer();
         String base = baseUrl(server);
         String html = "<div><p><a href=\"" + base + "cartoon\">Show</a></p>"
@@ -63,7 +63,7 @@ class PageWalkerTest {
     }
 
     @Test
-    void shouldReturnEmptyMapOnNonOkStatus() throws Exception {
+    public void shouldReturnEmptyMapOnNonOkStatus() throws Exception {
         server = startServer();
         String base = baseUrl(server);
         server.createContext("/cartoon", textResponse(404, "not found"));
@@ -82,7 +82,7 @@ class PageWalkerTest {
     }
 
     @Test
-    void shouldReturnNullWhenPageDoesNotMatchExpectedStructure() throws Exception {
+    public void shouldReturnNullWhenPageDoesNotMatchExpectedStructure() throws Exception {
         server = startServer();
         String base = baseUrl(server);
         server.createContext("/cartoon", textResponse(200, "<html><body><h1>No episode list</h1></body></html>"));
@@ -100,14 +100,14 @@ class PageWalkerTest {
     }
 
     @Configuration
-    static class TestConfig {
+    private static class TestConfig {
         @Bean
-        static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
             return new PropertySourcesPlaceholderConfigurer();
         }
 
         @Bean
-        PageWalker pageWalker() {
+        public PageWalker pageWalker() {
             return new PageWalker();
         }
     }

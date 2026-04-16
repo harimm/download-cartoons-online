@@ -11,15 +11,15 @@ import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-class TaskUtilTest {
+public class TaskUtilTest {
 
     @Test
-    void shouldHandleNullCollection() {
+    public void shouldHandleNullCollection() {
         assertDoesNotThrow(() -> TaskUtil.waitUntilComplete(null));
     }
 
     @Test
-    void shouldWaitForSuccessfulFutures() {
+    public void shouldWaitForSuccessfulFutures() {
         List<Future<String>> futures = Arrays.asList(
                 CompletableFuture.completedFuture("one"),
                 CompletableFuture.completedFuture("two")
@@ -29,7 +29,7 @@ class TaskUtilTest {
     }
 
     @Test
-    void shouldSwallowExecutionAndInterruptedExceptions() {
+    public void shouldSwallowExecutionAndInterruptedExceptions() {
         Future<String> executionFailure = CompletableFuture.failedFuture(new ExecutionException(new RuntimeException("fail")));
         Future<String> interruptedFailure = new InterruptedFuture<>();
 

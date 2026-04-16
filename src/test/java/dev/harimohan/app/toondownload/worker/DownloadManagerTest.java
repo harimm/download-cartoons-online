@@ -22,7 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class DownloadManagerTest {
+public class DownloadManagerTest {
     private DownloadManager manager;
     private ApplicationContext applicationContext;
     private Environment environment;
@@ -34,7 +34,7 @@ class DownloadManagerTest {
     private DownloadWorker downloadWorker;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         manager = new DownloadManager();
         applicationContext = mock(ApplicationContext.class);
         environment = mock(Environment.class);
@@ -56,14 +56,14 @@ class DownloadManagerTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         if (executorService != null) {
             executorService.shutdownNow();
         }
     }
 
     @Test
-    void shouldSkipCartoonWhenUrlPropertyIsMissing() {
+    public void shouldSkipCartoonWhenUrlPropertyIsMissing() {
         when(environment.getProperty("toon_download.download.sample.url")).thenReturn(null);
 
         manager.downloadCartoons();
@@ -72,7 +72,7 @@ class DownloadManagerTest {
     }
 
     @Test
-    void shouldSkipWhenEpisodeListIsNull() {
+    public void shouldSkipWhenEpisodeListIsNull() {
         when(environment.getProperty("toon_download.download.sample.url")).thenReturn("series");
         when(pageWalker.getCartoonPaths("series")).thenReturn(null);
 
@@ -83,7 +83,7 @@ class DownloadManagerTest {
     }
 
     @Test
-    void shouldProcessPendingEpisodesAndSkipOthers() {
+    public void shouldProcessPendingEpisodesAndSkipOthers() {
         when(environment.getProperty("toon_download.download.sample.url")).thenReturn("series");
 
         Map<String, String> episodeMap = new LinkedHashMap<>();

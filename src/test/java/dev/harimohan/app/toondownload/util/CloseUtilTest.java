@@ -9,15 +9,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CloseUtilTest {
+public class CloseUtilTest {
 
     @Test
-    void shouldIgnoreNullCloseable() {
+    public void shouldIgnoreNullCloseable() {
         assertDoesNotThrow(() -> CloseUtil.close(null));
     }
 
     @Test
-    void shouldCloseProvidedInstance() {
+    public void shouldCloseProvidedInstance() {
         AtomicBoolean closed = new AtomicBoolean(false);
         Closeable closeable = () -> closed.set(true);
 
@@ -27,7 +27,7 @@ class CloseUtilTest {
     }
 
     @Test
-    void shouldSwallowIoException() {
+    public void shouldSwallowIoException() {
         Closeable closeable = () -> {
             throw new IOException("boom");
         };

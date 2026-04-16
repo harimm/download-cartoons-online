@@ -18,22 +18,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class DownloadWorkerTest {
+public class DownloadWorkerTest {
 
     @TempDir
-    Path tempDir;
+    private Path tempDir;
 
     private HttpServer server;
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         if (server != null) {
             stopServer(server);
         }
     }
 
     @Test
-    void shouldDownloadVideoAndMarkEpisode() throws Exception {
+    public void shouldDownloadVideoAndMarkEpisode() throws Exception {
         server = startServer();
         byte[] content = "video-content".getBytes(StandardCharsets.UTF_8);
         server.createContext("/ok", bytesResponse(200, content));
@@ -50,7 +50,7 @@ class DownloadWorkerTest {
     }
 
     @Test
-    void shouldReturnFalseWhenHttpStatusIsNotOk() {
+    public void shouldReturnFalseWhenHttpStatusIsNotOk() {
         try {
             server = startServer();
             server.createContext("/missing", bytesResponse(404, new byte[0]));
@@ -68,7 +68,7 @@ class DownloadWorkerTest {
     }
 
     @Test
-    void shouldReturnFalseOnInvalidUrl() {
+    public void shouldReturnFalseOnInvalidUrl() {
         EpisodeTracker tracker = mock(EpisodeTracker.class);
         when(tracker.getDownloadFolder()).thenReturn(tempDir.toString() + "\\");
 

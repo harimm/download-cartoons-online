@@ -16,6 +16,9 @@ These rules define contribution standards for AI/code-assist changes in this rep
 - Preserve existing logging style (`slf4j` with parameterized or formatted messages).
 - Avoid introducing new frameworks unless explicitly requested.
 - Keep changes backward-compatible with current configuration keys.
+- Always declare explicit access modifiers on classes, methods, and fields.
+- Unless broader visibility is required by framework/runtime/contracts, default members to `private`.
+- JUnit test methods should be declared `public`.
 
 ## Configuration Standards
 - All runtime configuration must stay externalized in `application.properties`.
