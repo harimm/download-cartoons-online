@@ -1,0 +1,39 @@
+# Cline Rules for `download-cartoons-online`
+
+## Purpose
+These rules define contribution standards for AI/code-assist changes in this repository.
+
+## Technology Baseline
+- Language: Java 21
+- Build Tool: Gradle (Groovy DSL)
+- Framework: Spring Context/Core (non-Spring Boot)
+- Parsing/HTTP: Jsoup, Apache HttpClient 5
+- Testing: JUnit 5 + Mockito
+
+## Coding Standards
+- Keep package structure under `dev.harimohan.app.toondownload`.
+- Prefer small, focused classes and methods.
+- Preserve existing logging style (`slf4j` with parameterized or formatted messages).
+- Avoid introducing new frameworks unless explicitly requested.
+- Keep changes backward-compatible with current configuration keys.
+
+## Configuration Standards
+- All runtime configuration must stay externalized in `application.properties`.
+- Do not hardcode environment-specific paths in source code.
+- For new properties, document defaults and expected format in `README.md`.
+
+## Testing Standards
+- Add/adjust tests for behavior changes in `src/test/java`.
+- Prefer deterministic tests with mocks for network-related behavior.
+- Ensure tests pass via:
+  - `gradlew.bat test` (Windows)
+  - `./gradlew test` (Linux/macOS)
+
+## Documentation Standards
+- Update `README.md` when behavior/configuration/setup changes.
+- Keep examples aligned with current source and Gradle setup.
+
+## Safety & Maintenance
+- Never commit secrets, tokens, or private URLs.
+- Do not remove existing functionality unless requested.
+- Keep dependency updates minimal and justified.

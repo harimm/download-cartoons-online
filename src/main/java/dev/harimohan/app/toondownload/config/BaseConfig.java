@@ -19,7 +19,7 @@ public class BaseConfig {
     @Value("${toon_download.download.pool.size}")
     private Integer poolSize;
 
-    @Bean
+    @Bean(destroyMethod = "shutdownNow")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ScheduledExecutorService getExecutorService() {
         return Executors.newScheduledThreadPool(poolSize);

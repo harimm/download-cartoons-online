@@ -58,9 +58,10 @@ public class VideoFinder {
         try {
             String javaScript = page.selectFirst("#jwplayer-0").nextElementSibling().html();
             int jsonStartIndex = javaScript.indexOf("https");
-            int jsonEndIndex = javaScript.indexOf("type:") - 2;
-
-            return javaScript.substring(jsonStartIndex, jsonEndIndex);
+            int jsonEndIndex = javaScript.indexOf("\"", jsonStartIndex);
+            if (jsonStartIndex > -1 && jsonEndIndex > jsonStartIndex) {
+                return javaScript.substring(jsonStartIndex, jsonEndIndex);
+            }
         } catch (Throwable t) {
             logger.warn("Cannot find video url using method 1.", t);
         }
