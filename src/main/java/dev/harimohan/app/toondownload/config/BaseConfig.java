@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @PropertySource({"classpath:application.properties"})
 @ComponentScan("dev.harimohan.app.toondownload")
 public class BaseConfig {

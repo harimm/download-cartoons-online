@@ -74,8 +74,8 @@ public class VideoFinderTest {
         }
     }
 
-    @Configuration
-    private static class TestConfig {
+    @Configuration(proxyBeanMethods = false)
+    public static class TestConfig {
         @Bean
         public JSONParser jsonParser() {
             return new JSONParser();

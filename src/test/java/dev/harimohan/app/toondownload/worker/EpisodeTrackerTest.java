@@ -89,8 +89,8 @@ public class EpisodeTrackerTest {
         }
     }
 
-    @Configuration
-    private static class TestConfig {
+    @Configuration(proxyBeanMethods = false)
+    public static class TestConfig {
         @Bean
         public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
             return new PropertySourcesPlaceholderConfigurer();
